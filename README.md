@@ -14,6 +14,6 @@
 
 | Task     | Status  |
 |:--------:|:-------:|
-| Hello world | :x: |
+| Hello world | :white_check_mark: |
 | Hello, username! | :x:|
 | Array sort | :x: |
