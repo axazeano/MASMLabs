@@ -15,5 +15,11 @@
 | Task     | Status  |
 |:--------:|:-------:|
 | Hello world | :white_check_mark: |
-| Hello, username! | :x:|
+| Hello, username! | :white_check_mark:|
+
+###Second lab 
+
+| Task     | Status  |
+|:--------:|:-------:|
 | Array sort | :x: |
+| String to int | :x:|
