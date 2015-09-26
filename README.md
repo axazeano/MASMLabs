@@ -21,5 +21,5 @@
 
 | Task     | Status  |
 |:--------:|:-------:|
-| Array sort | :x: |
+| Array sort | :white_check_mark: |
 | String to int | :x:|
