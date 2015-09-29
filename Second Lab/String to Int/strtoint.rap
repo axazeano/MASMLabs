@@ -1,0 +1,49 @@
+[Project]
+Assembler=masm
+Type=DOS-exe
+Description=strtoint
+Backup=$P\Bak\
+Group=1
+GroupExpand=1
+[Files]
+1=strtoint.Asm
+[MakeFiles]
+0=strtoint.rap
+1=strtoint.rc
+2=strtoint.asm
+3=strtoint.obj
+4=strtoint.res
+5=strtoint.exe
+6=strtoint.def
+7=strtoint.dll
+8=strtoint.txt
+9=strtoint.lib
+10=strtoint.mak
+11=strtoint.hla
+12=strtoint.com
+13=strtoint.ocx
+14=strtoint.idl
+15=strtoint.tlb
+16=strtoint.sys
+17=strtoint.rsp
+[MakeDef]
+Menu=0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0
+1=
+2=3,O,$R\MASM\DOS\ML.EXE /DMASM /DDOS /Zm /c /nologo /I"$I",2
+3=5,O,$B\DOSLNK.EXE,3
+4=0,0,,5
+5=
+6=*.obj,O,$R\MASM\DOS\ML.EXE /DMASM /DDOS /Zm /c /nologo /I"$I",*.asm
+7=0,0,$B\CV.EXE,5
+11=
+12=3,O,$R\MASM\DOS\ML.EXE /Zm /Zi /Zd /DMASM /DDOS /DDEBUG /c /nologo /I"$I",2
+13=0,O,cmd.exe /C $R\MASM\DOS\link16.exe,3,||||| 
+14=0,0,,5
+15=
+16=*.obj,O,$R\MASM\DOS\ML.EXE /Zm /Zi /Zd /DMASM /DDOS /DDEBUG /c /nologo /I"$I",*.asm
+17=0,0,$B\CV.EXE,5
+[AutoLoad]
+1=1
+[Group]
+Group=Added files,Assembly,Resources,Misc,Modules
+1=2
