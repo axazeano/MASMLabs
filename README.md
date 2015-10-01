@@ -23,3 +23,10 @@
 |:--------:|:-------:|
 | Array sort | :white_check_mark: |
 | String to int | :x:|
+
+###Third lab 
+
+| Task     | Status  |
+|:--------:|:-------:|
+| Array sort | :white_check_mark: |
+| String to int | :x:|
