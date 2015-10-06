@@ -16,11 +16,19 @@ start:
         mov ah, 09h
         int 21h
         
-        mov bl, 10
+        mov bx, 10
         
         mov dx, offset string
         mov ah, 0Ah
         int 21h
+        
+        mov dl, 0Ah
+        mov ah, 02h
+	int 21h
+	
+	mov dl, 0Ah
+        mov ah, 02h
+	int 21h
         
         ; mov size of array into di
         xor ax, ax
@@ -28,26 +36,19 @@ start:
         add al, 2
         mov di, ax
         
-        ;mov ax, word ptr [string+1]
-        
-        
-        ;mov di, byte ptr [string+1]
+        xor dx, dx
         
         mov si, 2
         
-        xor dx, dx
-        
-        mov dl, 0Ah
-	mov ah, 02h
-	int 21h
-        
-        ;first element
-        
 to_int:
+	; read element from string
 	mov cl, [string+si]
+	; make digit
 	sub cl, '0'
+	;set ch=0 
 	xor ch, ch
 	
+	; check that cl is digit
 	cmp cl, 0
 	jb error
 	cmp cl, 9
@@ -56,45 +57,46 @@ to_int:
 	mov ax, dx
 	mul bl
 	mov dx, ax
-	add dx, cx
+	add ax, cx
 	
 	inc si
 	cmp si, di
 	jb to_int
 	
-	xor si, si
+	mov si, 2
+	
 	mov ax, dx
+	xor si, si
 	
 	jmp to_str
 	
 to_str:
-	mov ax, 123
+	; Divide on 10
 	div bl
-	mov dh, ah
+	
+	mov dl, ah
 	add dl, '0'
-	mov dh, al
-
+	xor dh, dh
+	push dx
+	
 	mov ah, 02h
-	int 21
+	int 21h
 	
 	xor ah, ah
-	
-	mov al, 255
-	sub al, dh
-	add al, 1
-
-	
-;	mov dl, al
-;	xor dh, dh
-;	
-;	mov al, dh
-;	xor ah, ah
-	
 	inc si
-	cmp si, di
-	jb to_str
+
+	cmp al, 0
+	jne to_str
+	jmp print
+
+print:
+	pop dx
+	mov ah, 02h
+	int 21h
+	dec si
+	cmp si, 0
+	jne print
 	jmp finish
-	
         
 error:
 	mov dx, offset msg_error
@@ -102,8 +104,8 @@ error:
 	int 21h
 	
 finish:
-	;mov ah, 01
-	;int 21
+	mov ah, 01h
+	int 21h
 	
 	mov     ax, 4C00h
         int     21h
@@ -119,6 +121,8 @@ dseg    segment byte
 	msg_again db 'Enter a string again',0Dh,0Ah,'$'
 	msg_finish db 'ok',0Dh,0Ah,'$'
 	string db 100h dup ('$')
+	
+	res_str db 100h dup ('$')
 	
 	mv_cursor db 0Dh
 	new_line db 0Dh
