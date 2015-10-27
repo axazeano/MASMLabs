@@ -1,4 +1,6 @@
 ; Template for DOS .exe file
+.286
+.model LARGE, C
 
 
         assume  cs:cseg, ds:dseg, ss:sseg
@@ -6,40 +8,50 @@
         ; code
 cseg    segment
 
-;StringReplace PROC far original_string:WORD, substring:WORD, index:WORD
-;
-;	mov di, original_string+index
-;	mov si, substring
-;	mov cx, 4
-;	rep movsb
-;	
-;	ret
-;StringReplace endp 
+Print PROC string:WORD
+	push ax
+	push dx
+	
+	mov dx, string
+	mov ah, 09h
+	int 21h
+	
+	pop dx
+	pop ax
+	ret
+Print endp 
+
+ReadStr PROC far string:WORD
+	push ax
+	
+	mov dx, string
+	mov ah, 0Ah
+	int 21h
+	
+	pop ax
+	ret
+
+ReadStr endp
 
 start:
         mov ax, dseg
         mov ds, ax
+        mov es, ax
         
-;       mov si, 9
-;	mov di,18
-
-	mov di, offset original_str
+        ; Enter string
+	
+	mov dx, offset enter_str
+	invoke Print,dx
+	mov dx, offset rep_str
+	invoke ReadStr,dx
+	mov di, offset original_str+2
 	mov si, offset rep_str
-	mov cx, 3
-	replace_loop:
-		lodsb
-		mov dl, al
-		mov ah, 02h
-		int 21h
-		stosb
-	loop replace_loop
+	mov cx, offset rep_str+1
+	rep movsb 
 	
+	mov dx, offset original_str
+	invoke Print,dx
 	
-       mov dx, offset original_str
-       mov ah, 09h
-       int 21h 
-       
-        ;nvoke StringReplace WORD PTR [original_str], WORD PTR [substring], 4
 	mov ah, 01h
 	int 21h
         ; exit to DOS
@@ -51,9 +63,10 @@ cseg    ends
 
         ; data
 dseg    segment byte
-
+	
+	 enter_str db "Enter string$", 0Ah, 0Dh 
         original_str db "Hello world!$",0Dh,0Ah
-        rep_str db "test"
+        rep_str db 100h dup("$")
 
 dseg    ends
 
