@@ -9,6 +9,7 @@
 cseg    segment
 
 Print PROC string:WORD
+	; Print string to console
 	push ax
 	push dx
 	
@@ -22,6 +23,7 @@ Print PROC string:WORD
 Print endp 
 
 ReadStr PROC far string:WORD
+	; Read str into buffer
 	push ax
 	
 	mov dx, string
@@ -33,21 +35,35 @@ ReadStr PROC far string:WORD
 
 ReadStr endp
 
+ReplaceStr PROC far main_string:WORD, substring:WORD, substing_len:WORD, position:WORD
+	; Procedure for replace substring in string
+	push di
+	push si
+	push cx
+	
+	mov di, main_string
+	add di, position
+	mov si, substring
+	mov cx, 4
+	rep movsb 
+	
+	pop cx
+	pop si
+	pop di
+	ret
+
+ReplaceStr endp
+
 start:
         mov ax, dseg
         mov ds, ax
         mov es, ax
         
         ; Enter string
-	
-	mov dx, offset enter_str
-	invoke Print,dx
-	mov dx, offset rep_str
-	invoke ReadStr,dx
-	mov di, offset original_str+2
-	mov si, offset rep_str
-	mov cx, offset rep_str+1
-	rep movsb 
+        mov dx, offset original_str
+        mov bx, offset rep_str
+        
+        invoke ReplaceStr,dx,bx,4,3
 	
 	mov dx, offset original_str
 	invoke Print,dx
@@ -63,10 +79,8 @@ cseg    ends
 
         ; data
 dseg    segment byte
-	
-	 enter_str db "Enter string$", 0Ah, 0Dh 
-        original_str db "Hello world!$",0Dh,0Ah
-        rep_str db 100h dup("$")
+        original_str db "Hello world!$",0Dh,0Ah, '$'
+        rep_str db "test"
 
 dseg    ends
 
