@@ -18,9 +18,11 @@
 		
 		push ax
 		push dx
-		mov dx, offset string
+		
+		mov dx, string
 		mov ah, 09h
 		int 21h
+		
 		pop dx
 		pop ax
 		
@@ -37,6 +39,37 @@
 		ret
 	WAIT_ANY_KEY endp
 	
+	
+	print_array PROC array:WORD, len:WORD
+		push si
+		push dx
+		push ax
+		push bx
+	
+		xor si, si
+	
+		print_loop:
+			mov bx, array
+			add bx, si
+			mov dx, bx
+			add dx, '0'
+			mov ah, 02h
+			int 21h
+			inc si
+			cmp si, len
+			jb print_loop
+		
+		mov dl, 0Ah
+		mov ah, 02h
+		int 21h
+	
+		pop bx
+		pop ax
+		pop dx
+		pop si
+		
+		ret
+	print_array endp
 
 
         ; exit to DOS

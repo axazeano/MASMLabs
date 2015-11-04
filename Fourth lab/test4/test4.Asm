@@ -15,11 +15,17 @@
 CSEG    SEGMENT
 
 
-
-
-
 start:
-        ; ... put your code here ...
+        mov ax, DSEG
+        mov ds, ax
+        mov es, ax
+        
+        mov ax, offset string
+        invoke Print,ax
+        
+        mov dx, 5
+        mov ax, WORD PTR [arr]
+        invoke print_array, ax, 5
 
 	
 	invoke WAIT_ANY_KEY
@@ -34,7 +40,8 @@ CSEG    ENDS
         ; data
 DSEG    SEGMENT byte
 
-        string db "Hello!$",0Dh,0Ah
+        string db "Hello!",0Dh,0Ah, '$'
+        arr db 1,2,3,4,5,6
 
 DSEG    ENDS
 
