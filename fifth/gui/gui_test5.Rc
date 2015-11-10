@@ -1,0 +1,4 @@
+#include "Res/gui_test5Dlg.rc"
+#include "Res/Tab1Dlg.rc"
+#include "Res/Tab2Dlg.rc"
+;#include "Res/Tab3Dlg.rc"
